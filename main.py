@@ -1,30 +1,38 @@
 import sys
 
 from text_adventure.grammar import interpreter
+from text_adventure import exception
 
-from archmage import dictionary
+from archmage import (dictionary,
+                      command)
 from archmage.agents import player
+from archmage.rooms import room
 
 
 class Game(object):
     def run(self):
-        self.player = player.Player(name='Player')
+        self.player = player.Player(key='Player')
+        room.createRooms()
+        
+        
         parser = interpreter.Interpreter(dictionary=dictionary.dictionary,
                                          thesaurus=dictionary.thesaurus)
         self.player.changeOwner(room.getRoom('archmage_ritual_room'))
         
         while(True):
-            actionText = raw_input('>')
+            commandText = raw_input('>')
             
             try:
-                action = interpreter.evaluate(actionText)
-                succeeded = self.actOnAction(action)
+                sentence = parser.evaluate(commandText)
+                parsedCommand = command.Command(sentence=sentence,
+                                                game=game)
+                succeeded = parsedCommand.act()
                 if not succeeded:
-                    raise CouldNotInterpret('I understood "%s", but did not know what to do with it.' % actionText)
-            except DenyInput, e:
+                    raise exception.CouldNotInterpret('I understood "%s", but did not know what to do with it.' % commandText)
+            except exception.DenyInput, e:
                 print e
                 continue
-            except PlayerDeath:
+            except exception.PlayerDeath:
                 print "You have died"
                 sys.exit()
 

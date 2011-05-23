@@ -7,7 +7,7 @@ class Command(object):
     
     def act(self):
         if self.isLookingAtRoom():
-            self.game.player.currentOwner.handleBeingLookedAt()
+            return self.game.player.currentOwner.handleBeingLookedAt()
     
     def isTravelling(self):
         if (self.verb == 'go' and

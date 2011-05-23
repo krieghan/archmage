@@ -10,4 +10,4 @@ class Resource(object):
         self.currentOwner = newOwner
         
     def handleBeingLookedAt(self):
-        pass
+        return "It defies description"

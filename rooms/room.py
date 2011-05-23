@@ -3,7 +3,9 @@ from archmage import resource
 roomsByKey = {}
 
 class Room(resource.Resource):
-    pass
+    def handleBeingLookedAt(self):
+        print "You see the room"
+        return True
 
 
 def createRooms():

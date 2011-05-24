@@ -13,14 +13,15 @@ class Room(resource.Resource):
         return self.description
     
     def handleBeingLookedAt(self):
-        print self.getDescription()
+        self.game.display(self.getDescription())
         return True
 
 
-def createRooms():
+def createRooms(game):
     roomsByKey = storeByKey([Room(key='archmage_ritual_room')])
     for (key, room) in roomsByKey.items():
-        description = text.process(getattr(room_descriptions, key))
+        room.setGame(game)
+        description = getattr(room_descriptions, key)
         room.setDescription(description)
     
 

@@ -4,6 +4,7 @@ class Resource(object):
     
     nouns = []
     adjectives = []
+    name = None
     
     def __init__(self,
                  key,
@@ -27,6 +28,9 @@ class Resource(object):
         self.inventory.add(resource,
                            slotKey)
     
+    def getName(self):
+        return self.name if self.name else self.__class__.name
+    
     def setGame(self,
                 game):
         self.game = game
@@ -36,11 +40,16 @@ class Resource(object):
         self.description = description
     
     def getDescription(self):
-        return self.description
+        return self.description if self.description else self.__class__.description
     
     def handleBeingLookedAt(self,
                             resources=None):
         print self.getDescription()
+        return True
+    
+    def handleBeingTalkedTo(self,
+                            resources=None):
+        print "%s has nothing to say to you" % self.getName()
         return True
     
     def findResourceFromInventory(self,

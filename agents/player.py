@@ -4,6 +4,8 @@ class Player(resource.Resource):
     nouns = ['me',
              'player']
     
+    description = "You can see a bit of your nose, but that's about it."
+    
     def findResource(self,
                      resourceName):
         resources = self.findResources(resourceName)

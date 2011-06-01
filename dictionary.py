@@ -1,9 +1,14 @@
-dictionary = {'verbs' : ['look'],
+dictionary = {'verbs' : ['look',
+                         'talk'],
               'nouns' : ['me'],
               'directions' : [],
               'articles' : [],
-              'prepositions' : ['at'],
+              'prepositions' : ['at', 
+                                'to'],
               'pronouns' : [],
               'names' : [],
               'adjectives' : []}
-thesaurus = []
+thesaurus = [['look',
+              'examine'],
+             ['talk',
+              'speak']]

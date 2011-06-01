@@ -5,24 +5,39 @@ class Command(object):
         self.sentence = sentence
         self.game = game
     
+    def findResources(self):
+        resources = {}
+        for prepositionalPhrase in self.sentence.prepositionalPhrases.values():
+            resourceName = prepositionalPhrase.object
+            resource = self.game.player.findResource(resourceName)
+            resources[prepositionalPhrase.preposition] = resource
+            
+        if self.sentence.object:
+            resource = self.game.player.findResource(self.sentence.object)
+            resources[None] = resource
+            
+        return resources
+            
     def act(self):
         if self.isLookingAtRoom():
             return self.game.player.currentOwner.handleBeingLookedAt()
         if self.isLookingAtResource():
-            resources = {}
-            for prepositionalPhrase in self.sentence.prepositionalPhrases.values():
-                resourceName = prepositionalPhrase.object
-                resource = self.game.player.findResource(resourceName)
-                resources[prepositionalPhrase.preposition] = resource
-                
+            resources = self.findResources()
+            
             if self.sentence.object:
-                resource = self.game.player.findResource(self.sentence.object)
-                resources[None] = resource
+                return resources[None].handleBeingLookedAt(resources)
             
             mainPhrase = self.sentence.prepositionalPhrases['main']
             mainPreposition = mainPhrase.preposition
             if mainPreposition == 'at':
                 return resources['at'].handleBeingLookedAt(resources)
+            
+        if self.isTalking():
+            resources = self.findResources()
+            
+            toPhrase = self.sentence.prepositionalPhrases['to']
+            if toPhrase is not None:
+                return resources['to'].handleBeingTalkedTo(resources)
                 
     
     def isTravelling(self):
@@ -154,7 +169,7 @@ class Command(object):
             return False
         
     def isTalking(self):
-        if self.verb == 'talk':
+        if self.sentence.verb == 'talk':
             return True
         else:
             return False

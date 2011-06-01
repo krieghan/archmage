@@ -8,31 +8,54 @@ class Command(object):
     def act(self):
         if self.isLookingAtRoom():
             return self.game.player.currentOwner.handleBeingLookedAt()
+        if self.isLookingAtResource():
+            resources = {}
+            for prepositionalPhrase in self.sentence.prepositionalPhrases.values():
+                resourceName = prepositionalPhrase.object
+                resource = self.game.player.findResource(resourceName)
+                resources[prepositionalPhrase.preposition] = resource
+                
+            if self.sentence.object:
+                resource = self.game.player.findResource(self.sentence.object)
+                resources[None] = resource
+            
+            mainPhrase = self.sentence.prepositionalPhrases['main']
+            mainPreposition = mainPhrase.preposition
+            if mainPreposition == 'at':
+                return resources['at'].handleBeingLookedAt(resources)
+                
     
     def isTravelling(self):
-        if (self.verb == 'go' and
-            (self.preposition is None or
-             self.preposition == 'to')):
+        if (self.sentence.verb == 'go' and
+            (self.sentence.preposition is None or
+             self.sentence.preposition == 'to')):
             return True
         else:
             return False
         
     def isLookingAtRoom(self):
-        if (self.sentence.verb == 'look' and 
-            (self.sentence.verbOnly() or
-             (self.sentence.preposition == 'at' and
-              self.sentence.indirectObject == 'room') or
-             self.sentence.preposition == 'around')):
-            return True
-        else:
-            return False
+        atPhrase = self.sentence.prepositionalPhrases.get('at')
+        aroundPhrase = self.sentence.prepositionalPhrases.get('around')
         
-    def isLookingAtEntity(self):
-        if (self.verb == 'look' and 
-            (self.object is not None or self.indirectObject is not None)):
-            return True
-        else:
-            return False
+        if self.sentence.verb == 'look':
+            if self.sentence.verbOnly():
+                return True
+            if atPhrase is not None and atPhrase.object == 'room':
+                return True
+            if aroundPhrase is not None:
+                return True
+            
+    
+        return False
+        
+    def isLookingAtResource(self):
+        if self.sentence.verb == 'look':
+            if self.sentence.prepositionalPhrases:
+                return True
+            if self.sentence.object:
+                return True
+        
+        return False
         
     def isReading(self):
         if self.verb == 'read':

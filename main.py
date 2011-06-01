@@ -6,7 +6,7 @@ from text_adventure import (exception,
 
 from archmage import (dictionary,
                       command)
-from archmage.agents import player
+from archmage.agents import agent
 from archmage.rooms import room
 
 
@@ -17,14 +17,16 @@ class Game(object):
         self.communicator = communicator
     
     def run(self):
-        self.player = player.Player(key='Player',
-                                    game=self)
         room.createRooms(game=self)
-        
+        agent.createAgents(game=self)
+        agent.placeAgentsInRooms()
+                
+        self.player = agent.getAgent('player')
         
         parser = interpreter.Interpreter(dictionary=dictionary.dictionary,
                                          thesaurus=dictionary.thesaurus)
         self.player.changeOwner(room.getRoom('archmage_ritual_room'))
+        self.addResourcesToParser(parser)
         
         while(True):
             commandText = raw_input('>')
@@ -46,6 +48,23 @@ class Game(object):
     def display(self,
                 text):
         self.communicator.output(text)
+
+    def addResourcesToParser(self,
+                             parser):
+        resources = self.getAllResources()
+        nouns = []
+        adjectives = []
+        for resource in resources:
+            nouns += resource.nouns
+            adjectives += resource.adjectives
+        
+        parser.addWords(nouns,
+                        'noun')
+        parser.addWords(adjectives,
+                        'adjectives')
+        
+    def getAllResources(self):
+        return room.roomsByKey.values() + agent.agentsByKey.values()
 
 if __name__ == '__main__':
     communicator = text.StandardCommunicator(wrapLength=80)

@@ -4,5 +4,6 @@ dictionary = {'verbs' : ['look'],
               'articles' : [],
               'prepositions' : ['at'],
               'pronouns' : [],
-              'names' : []}
+              'names' : [],
+              'adjectives' : []}
 thesaurus = []

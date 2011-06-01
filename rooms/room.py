@@ -18,17 +18,19 @@ class Room(resource.Resource):
 
 
 def createRooms(game):
-    roomsByKey = storeByKey([Room(key='archmage_ritual_room')])
+    storeByKey([Room(key='archmage_ritual_room')])
     for (key, room) in roomsByKey.items():
         room.setGame(game)
         description = getattr(room_descriptions, key)
         room.setDescription(description)
-    
+        
+def getRoom(key):
+    return roomsByKey[key]
+
+
+  
 
 def storeByKey(rooms):
     for room in rooms:
         roomsByKey[room.key] = room
-    return roomsByKey
 
-def getRoom(key):
-    return roomsByKey[key]

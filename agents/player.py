@@ -1,6 +1,7 @@
 from archmage import resource
+from archmage.agents import agent
 
-class Player(resource.Resource):
+class Player(agent.Agent):
     nouns = ['me',
              'player']
     
@@ -22,3 +23,14 @@ class Player(resource.Resource):
         resources.extend(self.currentOwner.findResourceFromInventory(resourceName))
         resources.extend(self.findResourceFromInventory(resourceName))
         return resources
+    
+    def findAgent(self,
+                  agentKey=None):
+        agents = self.currentOwner.getAgents()
+        eligibleAgents = [agent for agent in agents if agent != self]
+        if len(eligibleAgents) == 0:
+            raise exception.NotPresent()
+        elif len(eligibleAgents) > 1:
+            raise exception.AmbiguousResource(eligibleAgents)
+        else:
+            return eligibleAgents[0]

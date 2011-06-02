@@ -55,4 +55,9 @@ class Resource(object):
     def findResourceFromInventory(self,
                                   resourceName):
         return self.inventory.match(resourceName)
+    
+    def getAgents(self):
+        from archmage.agents import agent
+        allResources = self.inventory.getAll()
+        return [resource for resource in allResources if isinstance(resource, agent.Agent)]
         

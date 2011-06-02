@@ -6,7 +6,7 @@ from text_adventure import (exception,
 
 from archmage import (dictionary,
                       command)
-from archmage.agents import agent
+from archmage.agents import agents
 from archmage.rooms import room
 
 
@@ -18,10 +18,10 @@ class Game(object):
     
     def run(self):
         room.createRooms(game=self)
-        agent.createAgents(game=self)
-        agent.placeAgentsInRooms()
+        agents.createAgents(game=self)
+        agents.placeAgentsInRooms()
                 
-        self.player = agent.getAgent('player')
+        self.player = agents.getAgent('player')
         
         parser = interpreter.Interpreter(dictionary=dictionary.dictionary,
                                          thesaurus=dictionary.thesaurus)
@@ -64,7 +64,7 @@ class Game(object):
                         'adjectives')
         
     def getAllResources(self):
-        return room.roomsByKey.values() + agent.agentsByKey.values()
+        return room.roomsByKey.values() + agents.agentsByKey.values()
 
 if __name__ == '__main__':
     communicator = text.StandardCommunicator(wrapLength=80)

@@ -38,7 +38,20 @@ class Command(object):
             toPhrase = self.sentence.prepositionalPhrases['to']
             if toPhrase is not None:
                 return resources['to'].handleBeingTalkedTo(resources)
+            
+        if self.isAsking():
+            resources = {}
+            if self.sentence.object:
+                resources[None] = self.game.player.findResource(self.sentence.object)
+            else:
+                resources[None] = self.game.player.findAgent()
+            
+            for prepositionalPhrase in self.sentence.prepositionalPhrases.values():
+                preposition = prepositionalPhrase.preposition
+                object = prepositionalPhrase.object
+                resources[preposition] = object
                 
+            return resources[None].handleBeingAsked(resources)
     
     def isTravelling(self):
         if (self.sentence.verb == 'go' and
@@ -175,7 +188,7 @@ class Command(object):
             return False
         
     def isAsking(self):
-        if self.verb == 'ask':
+        if self.sentence.verb == 'ask':
             return True
         else:
             return False

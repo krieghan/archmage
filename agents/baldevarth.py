@@ -13,6 +13,8 @@ class Baldevarth(agent.Agent):
     
     description = 'It is Baldevarth, the archmage.'
     
+    givenMission = False
+    
     def handleBeingTalkedTo(self,
                             resources):
         toSay =\
@@ -23,16 +25,34 @@ class Baldevarth(agent.Agent):
         return True
             
     def handleBeingAsked(self,
-                         subject):
-            
-        mission =\
-            '''"You must go into the cave near the waterfall west of town.  Inside the cave, you
-                will find something of great value.  Retrieve it for me and I will begin your tutelage."'''
-                
-        takeABook =\
-                '''The old man strokes his gray beard for a moment.  "Oh, I almost forgot.  You will need
-                   a certain something to carry out your mission."  He waves his hands toward the bookshelf
-                   in the corner of the room.  "Choose a single book from my bookshelf.  Read it before your journey.
-                   When you are finished reading it, place it on the bookshelf in your library."'''
-        self.game.display('%s %s' % (mission, takeABook))
+                         resources):
+        subject = resources['about']
+        
+        if subject == 'mission':
+            toSay = ''
+            mission =\
+                '''"You must go into the cave near the waterfall west of town.  Inside the cave, you
+                    will find something of great value.  Retrieve it for me and I will begin your tutelage." '''
+            toSay += mission
+            if not self.__class__.givenMission:
+                takeABook =\
+                    '''The old man strokes his gray beard for a moment.  "Oh, I almost forgot.  You will need
+                       a certain something to carry out your mission."  He waves his hands toward the bookshelf
+                       in the corner of the room.  "Choose a single book from my bookshelf.  Read it before your journey.
+                       When you are finished reading it, place it on the bookshelf in your library." '''
+                toSay += takeABook
+                self.__class__.givenMission = True
+            self.game.display(toSay)
+        elif subject == 'book':
+            book =\
+                '''Choose a book, young man.  Reading it will bestow upon you a measure of power.  The nature
+                   of the power that you receive depends upon you, and which book you choose.  Choose wisely.'''
+            self.game.display(book)
+        elif subject == 'cave':
+            cave =\
+                '''I really cannot say what you might encounter inside the cave.  All I can tell you is that you
+                   are ready to face it - or rather, that you will be when you have finished reading your first
+                   book.'''
+        else:
+            self.game.display('''That does not pertain to your mission, my friend, and time is short.''')
         return True

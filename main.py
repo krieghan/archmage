@@ -8,6 +8,7 @@ from archmage import (dictionary,
                       command)
 from archmage.agents import agents
 from archmage.rooms import room
+from archmage.items import items
 
 
 class Game(object):
@@ -19,7 +20,9 @@ class Game(object):
     def run(self):
         room.createRooms(game=self)
         agents.createAgents(game=self)
+        items.createItems(game=self)
         agents.placeAgentsInRooms()
+        items.placeItemsInContainers()
                 
         self.player = agents.getAgent('player')
         
@@ -38,8 +41,11 @@ class Game(object):
                 succeeded = parsedCommand.act()
                 if not succeeded:
                     raise exception.CouldNotInterpret('I understood "%s", but did not know what to do with it.' % commandText)
+            except exception.MissingObject, e:
+                self.display(str(e))
+                continue
             except exception.DenyInput, e:
-                print e
+                self.display(str(e))
                 continue
             except exception.PlayerDeath:
                 print "You have died"

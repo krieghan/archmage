@@ -1,3 +1,5 @@
+from text_adventure import exception
+
 from archmage import resource
 from archmage.agents import agent
 

@@ -27,7 +27,9 @@ class Game(object):
         self.player = agents.getAgent('player')
         
         parser = interpreter.Interpreter(dictionary=dictionary.dictionary,
-                                         thesaurus=dictionary.thesaurus)
+                                         thesaurus=dictionary.thesaurus,
+                                         singleToPlural=dictionary.singleToPlural,
+                                         pluralToSingle=dictionary.pluralToSingle)
         self.player.changeOwner(room.getRoom('archmage_ritual_room'))
         self.addResourcesToParser(parser)
         

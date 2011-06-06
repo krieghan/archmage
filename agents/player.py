@@ -6,6 +6,7 @@ from archmage.agents import agent
 class Player(agent.Agent):
     nouns = ['me',
              'player']
+    name = 'the stalwart apprentice mage'
     
     description = "You can see a bit of your nose, but that's about it."
     

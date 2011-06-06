@@ -52,6 +52,11 @@ class Command(object):
                 resources[preposition] = object
                 
             return resources[None].handleBeingAsked(resources)
+        
+        if self.isGetting():
+            resources = self.findResources()
+            return resources[None].handleBeingRetrieved(resources)
+                
     
     def isTravelling(self):
         if (self.sentence.verb == 'go' and
@@ -92,8 +97,7 @@ class Command(object):
             return False
         
     def isGetting(self):
-        if ((self.verb == 'get') or
-            (self.verb == 'pick' and self.preposition == 'up')):
+        if self.sentence.verb == 'get':
             return True
         else:
             return False

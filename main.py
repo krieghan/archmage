@@ -72,7 +72,7 @@ class Game(object):
                         'adjectives')
         
     def getAllResources(self):
-        return room.roomsByKey.values() + agents.agentsByKey.values()
+        return room.roomsByKey.values() + agents.agentsByKey.values() + items.itemsByKey.values()
 
 if __name__ == '__main__':
     communicator = text.StandardCommunicator(wrapLength=80)

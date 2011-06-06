@@ -1,6 +1,7 @@
 dictionary = {'verbs' : ['look',
                          'talk',
-                         'ask'],
+                         'ask',
+                         'get'],
               'nouns' : ['me',
                          'mission',
                          'book'],
@@ -15,7 +16,10 @@ dictionary = {'verbs' : ['look',
 thesaurus = [['look',
               'examine'],
              ['talk',
-              'speak']]
+              'speak'],
+             ['get',
+              'retrieve',
+              'pick up']]
 
 pluralReference = []
 

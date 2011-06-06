@@ -44,12 +44,22 @@ class Resource(object):
     
     def handleBeingLookedAt(self,
                             resources=None):
-        print self.getDescription()
+        self.game.display(self.getDescription())
         return True
     
     def handleBeingTalkedTo(self,
                             resources=None):
-        print "%s has nothing to say to you" % self.getName()
+        self.game.display("%s has nothing to say to you" % self.getName())
+        return True
+    
+    def handleBeingAsked(self,
+                         resources=None):
+        self.game.display("%s knows nothing about that subject" % self.getName())
+        return True
+    
+    def handleBeingRetrieved(self,
+                             resources=None):
+        self.game.display("For the life of you, you cannot figure out why you would want %s" % self.getName())
         return True
     
     def findResourceFromInventory(self,

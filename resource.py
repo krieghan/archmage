@@ -7,10 +7,17 @@ class Resource(object):
     name = None
     
     def __init__(self,
-                 key,
-                 game=None):
+                 key=None,
+                 game=None,
+                 inside=False,
+                 on=False,
+                 under=False):
+        if key is None:
+            key = self.__class__.defaultKey
         self.currentOwner = None
-        self.inventory = inventory.InventoryManager(inside=True)
+        self.inventory = inventory.InventoryManager(inside=inside,
+                                                    on=on,
+                                                    under=under)
         self.key = key
         self.game = game
         self.description = None

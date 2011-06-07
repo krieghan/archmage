@@ -69,7 +69,7 @@ class Game(object):
         parser.addWords(nouns,
                         'noun')
         parser.addWords(adjectives,
-                        'adjectives')
+                        'adjective')
         
     def getAllResources(self):
         return room.roomsByKey.values() + agents.agentsByKey.values() + items.itemsByKey.values()

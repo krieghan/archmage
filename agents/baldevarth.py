@@ -1,5 +1,7 @@
 from archmage import resource
 from archmage.agents import agent
+from archmage.items import items
+from archmage.items.books import book_of_dominance
 
 class Baldevarth(agent.Agent):
     nouns = ['archmage',
@@ -41,6 +43,7 @@ class Baldevarth(agent.Agent):
                        in the corner of the room.  "Choose a single book from my bookshelf.  Read it before your journey.
                        When you are finished reading it, place it on the bookshelf in your library." '''
                 toSay += takeABook
+                self.addBooksToBookshelf()
                 self.__class__.givenMission = True
             self.game.display(toSay)
         elif subject == 'book':
@@ -56,3 +59,8 @@ class Baldevarth(agent.Agent):
         else:
             self.game.display('''That does not pertain to your mission, my friend, and time is short.''')
         return True
+    
+    def addBooksToBookshelf(self):
+        bookshelf = items.getItem('archmage_bookshelf')
+        book_of_dominance.BookOfDominance(game=self.game).changeOwner(bookshelf,
+                                                                      slotKey='on')

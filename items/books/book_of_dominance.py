@@ -4,6 +4,7 @@ class BookOfDominance(item.Item):
     adjectives = ['black']
     nouns = ['book',
              'book of dominance']
-    name = 'a book of dominance'
+    name = 'the book of dominance'
+    defaultKey = 'book_of_dominance'
     
     

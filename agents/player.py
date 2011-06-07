@@ -16,7 +16,7 @@ class Player(agent.Agent):
         if len(resources) == 0:
             raise exception.MissingObject('There is no %s here' % resourceName)
         elif len(resources) > 1:
-            raise exception.AmbiguousEntity(resources)
+            raise exception.AmbiguousResource(resources)
         else:
             return resources[0]
     

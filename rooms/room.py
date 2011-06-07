@@ -9,6 +9,14 @@ roomsByKey = {}
 
 class Room(resource.Resource):
     
+    def __init__(self,
+                 key=None,
+                 game=None):
+        resource.Resource.__init__(self,
+                                   key=key,
+                                   game=game,
+                                   inside=True)
+    
     def getDescription(self):
         return self.description
     

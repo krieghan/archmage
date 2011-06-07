@@ -8,7 +8,8 @@ def createItems(game):
     
     #ritual room
     
-    storeByKey([bookshelf.Bookshelf(key='archmage_bookshelf'),
+    storeByKey([bookshelf.Bookshelf(key='archmage_bookshelf',
+                                    on=True),
                 dusty_books.DustyBooks(key='dusty_books')])
     
     for (key, item) in itemsByKey.items():
@@ -26,7 +27,7 @@ def storeByKey(items):
 
 def placeItemsInContainers():
     placeItemInRoom('archmage_bookshelf', 'archmage_ritual_room')
-    placeItemInContainer('dusty_books', 'archmage_bookshelf', 'inside')
+    placeItemInContainer('dusty_books', 'archmage_bookshelf', 'on')
 
 def placeItemInRoom(item_key, room_key):
     itemForKey = getItem(item_key)

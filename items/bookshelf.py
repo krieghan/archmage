@@ -8,4 +8,5 @@ class Bookshelf(item.Item):
                      sit on its shelves.  Baldevarth's eyes dart over to this bookshelf every few seconds.
                      As it is the only shelf in his ritual room, you gather that it has significant importance
                      to the old man.'''
+                     
     

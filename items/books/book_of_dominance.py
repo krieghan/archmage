@@ -6,5 +6,6 @@ class BookOfDominance(item.Item):
              'book of dominance']
     name = 'the book of dominance'
     defaultKey = 'book_of_dominance'
+    retrievable = True
     
     

@@ -5,6 +5,7 @@ class Resource(object):
     nouns = []
     adjectives = []
     name = None
+    retrievable = False
     
     def __init__(self,
                  key=None,
@@ -36,7 +37,10 @@ class Resource(object):
                            slotKey)
     
     def getName(self):
-        return self.name if self.name else self.__class__.name
+        return getattr(self, 'name', self.__class__.name)
+    
+    def isRetrievable(self):
+        return getattr(self, 'retrievable', self.__class__.retrievable)
     
     def setGame(self,
                 game):
@@ -66,7 +70,11 @@ class Resource(object):
     
     def handleBeingRetrieved(self,
                              resources=None):
-        self.game.display("For the life of you, you cannot figure out why you would want %s" % self.getName())
+        if self.isRetrievable():
+            self.changeOwner(self.game.player)
+            self.game.display("You pick up the %s" % self.getName())
+        else:
+            self.game.display("For the life of you, you cannot figure out why you would want %s" % self.getName())
         return True
     
     def findResourceFromInventory(self,
@@ -77,4 +85,5 @@ class Resource(object):
         from archmage.agents import agent
         allResources = self.inventory.getAll()
         return [resource for resource in allResources if isinstance(resource, agent.Agent)]
+    
         

@@ -19,6 +19,9 @@ class Command(object):
         return resources
             
     def act(self):
+        if self.isCheckingInventory():
+            return self.game.player.displayInventory()
+        
         if self.isLookingAtRoom():
             return self.game.player.currentOwner.handleBeingLookedAt()
         if self.isLookingAtResource():
@@ -140,10 +143,13 @@ class Command(object):
         
         
     def isCheckingInventory(self):
-        if ((self.object == 'inventory' or 
-             self.indirectObject == 'inventory') and
-            (self.verb == 'look' or
-             self.verb is None)):
+        atPhrase = self.sentence.prepositionalPhrases.get('at')
+        inPhrase = self.sentence.prepositionalPhrases.get('in')
+        if ((self.sentence.object == 'inventory' or 
+             (atPhrase and atPhrase.object == 'inventory') or
+             (inPhrase and inPhrase.object == 'inventory')) and
+            (self.sentence.verb == 'look' or
+             self.sentence.verb is None)):
             return True
         else:
             return False

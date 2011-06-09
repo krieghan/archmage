@@ -1,4 +1,5 @@
-from text_adventure import exception
+from text_adventure import (exception,
+                            inventory)
 
 from archmage import resource
 from archmage.agents import agent
@@ -37,3 +38,8 @@ class Player(agent.Agent):
             raise exception.AmbiguousResource(eligibleAgents)
         else:
             return eligibleAgents[0]
+        
+    
+    def displayInventory(self):
+        inventory.displayPlayerInventory(self.inventory)
+        return True

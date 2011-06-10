@@ -5,15 +5,18 @@ class Command(object):
         self.sentence = sentence
         self.game = game
     
-    def findResources(self):
+    def findResources(self,
+                      source='all'):
         resources = {}
         for prepositionalPhrase in self.sentence.prepositionalPhrases.values():
             resourceName = prepositionalPhrase.object
-            resource = self.game.player.findResource(resourceName)
+            resource = self.game.player.findResource(resourceName,
+                                                     source=source)
             resources[prepositionalPhrase.preposition] = resource
             
         if self.sentence.object:
-            resource = self.game.player.findResource(self.sentence.object)
+            resource = self.game.player.findResource(self.sentence.object,
+                                                     source=source)
             resources[None] = resource
             
         return resources
@@ -57,7 +60,7 @@ class Command(object):
             return resources[None].handleBeingAsked(resources)
         
         if self.isGetting():
-            resources = self.findResources()
+            resources = self.findResources(source='room')
             return resources[None].handleBeingRetrieved(resources)
         
         if self.isReading():

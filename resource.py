@@ -24,6 +24,10 @@ class Resource(object):
         self.key = key
         self.game = game
         self.description = None
+        self.initState()
+    
+    def initState(self):
+        pass
     
     def changeOwner(self,
                     newOwner,
@@ -48,6 +52,9 @@ class Resource(object):
     
     def getName(self):
         return getattr(self, 'name', self.__class__.name)
+    
+    def inPlayerInventory(self):
+        return self.currentOwner == self.game.player
     
     def isRetrievable(self):
         return getattr(self, 'retrievable', self.__class__.retrievable)

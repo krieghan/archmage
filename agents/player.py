@@ -11,9 +11,18 @@ class Player(agent.Agent):
     
     description = "You can see a bit of your nose, but that's about it."
     
+    
+    def initState(self):
+        stats = {'dominance' : 0,
+                 'will' : 0}
+        self.stats.update(stats)
+    
+    
     def findResource(self,
-                     resourceName):
-        resources = self.findResources(resourceName)
+                     resourceName,
+                     source='all'):
+        resources = self.findResources(resourceName,
+                                       source)
         if len(resources) == 0:
             raise exception.MissingObject('There is no %s here' % resourceName)
         elif len(resources) > 1:
@@ -22,10 +31,17 @@ class Player(agent.Agent):
             return resources[0]
     
     def findResources(self,
-                      resourceName):
+                      resourceName,
+                      source='all'):
         resources = []
-        resources.extend(self.currentOwner.findResourceFromInventory(resourceName))
-        resources.extend(self.findResourceFromInventory(resourceName))
+        if source == 'all':
+            resources.extend(self.currentOwner.findResourceFromInventory(resourceName))
+            resources.extend(self.findResourceFromInventory(resourceName))
+        elif source == 'room':
+            resources.extend(self.currentOwner.findResourceFromInventory(resourceName))
+        elif source == 'self':
+            resources.extend(self.findResourceFromInventory(resourceName))
+
         return resources
     
     def findAgent(self,

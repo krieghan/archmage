@@ -59,6 +59,11 @@ class Command(object):
         if self.isGetting():
             resources = self.findResources()
             return resources[None].handleBeingRetrieved(resources)
+        
+        if self.isReading():
+            resources = self.findResources()
+            resources[None].handleBeingRead(resources)
+            return True
                 
     
     def isTravelling(self):
@@ -94,7 +99,7 @@ class Command(object):
         return False
         
     def isReading(self):
-        if self.verb == 'read':
+        if self.sentence.verb == 'read':
             return True
         else:
             return False

@@ -12,13 +12,15 @@ class Resource(object):
                  game=None,
                  inside=False,
                  on=False,
-                 under=False):
+                 under=False,
+                 inventoryExposed=True):
         if key is None:
             key = self.__class__.defaultKey
         self.currentOwner = None
         self.inventory = inventory.InventoryManager(inside=inside,
                                                     on=on,
-                                                    under=under)
+                                                    under=under,
+                                                    exposed=inventoryExposed)
         self.key = key
         self.game = game
         self.description = None
@@ -26,6 +28,8 @@ class Resource(object):
     def changeOwner(self,
                     newOwner,
                     slotKey='inside'):
+        if self.currentOwner:
+            self.currentOwner.removeFromInventory(self)
         self.currentOwner = newOwner
         self.currentOwner.addToInventory(self,
                                          slotKey)
@@ -35,6 +39,12 @@ class Resource(object):
                        slotKey):
         self.inventory.add(resource,
                            slotKey)
+        
+    def removeFromInventory(self,
+                            resource,
+                            slotKey=None):
+        self.inventory.remove(resource,
+                              slotKey)
     
     def getName(self):
         return getattr(self, 'name', self.__class__.name)
@@ -76,6 +86,10 @@ class Resource(object):
         else:
             self.game.display("For the life of you, you cannot figure out why you would want %s" % self.getName())
         return True
+    
+    def handleBeingRead(self,
+                        resources=None):
+        self.game.display("You'd like to be able to read the %s, but there are no words on it" % self.getName())
     
     def findResourceFromInventory(self,
                                   resourceName):

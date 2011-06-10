@@ -7,5 +7,6 @@ class Agent(resource.Resource):
         resource.Resource.__init__(self,
                                    key=key,
                                    game=game,
-                                   inside=True)
+                                   inside=True,
+                                   inventoryExposed=False)
 

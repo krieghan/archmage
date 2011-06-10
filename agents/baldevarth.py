@@ -11,7 +11,7 @@ class Baldevarth(agent.Agent):
              'man']
     adjectives = ['old',
                   'wise']
-    name = 'Baldevarth'
+    name = 'archmage'
     
     description = 'It is Baldevarth, the archmage.'
     

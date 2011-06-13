@@ -49,6 +49,9 @@ class Game(object):
             except exception.DenyInput, e:
                 self.display(str(e))
                 continue
+            except exception.CannotPerformAction, e:
+                self.display(str(e))
+                continue
             except exception.PlayerDeath:
                 print "You have died"
                 sys.exit()

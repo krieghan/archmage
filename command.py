@@ -67,6 +67,11 @@ class Command(object):
             resources = self.findResources()
             resources[None].handleBeingRead(resources)
             return True
+        
+        if self.isPlacing():
+            resources = self.findResources()
+            resources[None].handleBeingPlaced(resources)
+            return True
                 
     
     def isTravelling(self):
@@ -113,18 +118,8 @@ class Command(object):
         else:
             return False
         
-    def isDropping(self):
-        if (self.verb == 'drop' and 
-            (self.indirectObject is None or
-             self.indirectObject == 'ground')):
-            return True
-        else:
-            return False
-        
     def isPlacing(self):
-        if ((self.verb == 'drop' or
-             self.verb == 'put') and
-            self.indirectObject is not None):
+        if self.sentence.verb == 'put':
             return True
         else:
             return False

@@ -1,4 +1,5 @@
-from text_adventure import inventory
+from text_adventure import (inventory,
+                            exception)
 
 class Resource(object):
     
@@ -29,9 +30,16 @@ class Resource(object):
     def initState(self):
         pass
     
+    def isRoom(self):
+        return False
+    
     def changeOwner(self,
                     newOwner,
                     slotKey='inside'):
+        if newOwner.inventory.slots.get(slotKey) is None:
+            raise exception.CannotPerformAction("You cannot put the %s %s the %s" % (self.getName(),
+                                                                                     slotKey,
+                                                                                     newOwner.getName()))
         if self.currentOwner:
             self.currentOwner.removeFromInventory(self)
         self.currentOwner = newOwner
@@ -97,6 +105,39 @@ class Resource(object):
     def handleBeingRead(self,
                         resources=None):
         self.game.display("You'd like to be able to read the %s, but there are no words on it" % self.getName())
+        
+    def handleBeingPlaced(self,
+                          resources=None):
+        if self.isRetrievable():
+            if resources.get('in'):
+                newOwner = resources['in']
+                slotKey = 'inside'
+            elif resources.get('on'):
+                newOwner = resources['on']
+                slotKey = 'on'
+            elif resources.get('under'):
+                newOwner = resources['under']
+                slotKey = 'under'
+            else:
+                newOwner = self.game.player.currentOwner
+                slotKey = 'inside'
+            
+            self.changeOwner(newOwner, 
+                             slotKey)
+            
+            if newOwner.isRoom():
+                preposition = 'on'
+                noun = 'ground'
+            else:
+                preposition = slotKey
+                noun = newOwner.getName()
+            
+            self.game.display("You place the %s %s the %s" % (self.getName(),
+                                                              preposition,
+                                                              noun))
+            
+        else:
+            self.game.display("The %s is too heavy to pick up" % self.getName())
     
     def findResourceFromInventory(self,
                                   resourceName):

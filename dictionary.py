@@ -2,7 +2,8 @@ dictionary = {'verbs' : ['look',
                          'talk',
                          'ask',
                          'get',
-                         'read'],
+                         'read',
+                         'put'],
               'nouns' : ['me',
                          'mission',
                          'book',
@@ -12,7 +13,9 @@ dictionary = {'verbs' : ['look',
               'articles' : [],
               'prepositions' : ['at', 
                                 'to',
-                                'about'],
+                                'about',
+                                'in',
+                                'on'],
               'pronouns' : [],
               'names' : [],
               'adjectives' : ['red']}
@@ -22,7 +25,10 @@ thesaurus = [['look',
               'speak'],
              ['get',
               'retrieve',
-              'pick up']]
+              'pick up'],
+             ['put',
+              'place',
+              'drop']]
 
 pluralReference = []
 

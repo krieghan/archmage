@@ -9,6 +9,8 @@ roomsByKey = {}
 
 class Room(resource.Resource):
     
+    name = "room"
+    
     def __init__(self,
                  key=None,
                  game=None):
@@ -16,12 +18,16 @@ class Room(resource.Resource):
                                    key=key,
                                    game=game,
                                    inside=True)
+        
     
     def getDescription(self):
         return self.description
     
     def handleBeingLookedAt(self):
         self.game.display(self.getDescription())
+        return True
+    
+    def isRoom(self):
         return True
 
 

@@ -1,3 +1,6 @@
+from archmage.rooms import room
+from text_adventure import exception
+
 class Command(object):
     def __init__(self,
                  sentence,
@@ -22,6 +25,22 @@ class Command(object):
         return resources
             
     def act(self):
+        
+        if self.isTravelling():
+            direction = self.sentence.object
+            currentRoom = self.game.player.currentOwner
+            newRoom = currentRoom.getRoom(direction)
+            if not isinstance(newRoom, room.Room):
+                if newRoom is None:
+                    response = 'You cannot go that way'
+                else:
+                    response = newRoom
+                    
+                raise exception.CannotGoThatWay(response)
+            
+            self.game.player.changeOwner(newRoom)
+            return True
+        
         if self.isCheckingInventory():
             return self.game.player.displayInventory()
         
@@ -75,9 +94,7 @@ class Command(object):
                 
     
     def isTravelling(self):
-        if (self.sentence.verb == 'go' and
-            (self.sentence.preposition is None or
-             self.sentence.preposition == 'to')):
+        if self.sentence.verb == 'go':
             return True
         else:
             return False

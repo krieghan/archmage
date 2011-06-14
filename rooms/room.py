@@ -6,6 +6,12 @@ from archmage import resource
 from archmage.rooms import room_descriptions
 
 roomsByKey = {}
+oppositeDirectionReference = {'north' : 'south',
+                              'south' : 'north',
+                              'east' : 'west',
+                              'west' : 'east',
+                              'up' : 'down',
+                              'down' : 'up'}
 
 class Room(resource.Resource):
     
@@ -18,7 +24,8 @@ class Room(resource.Resource):
                                    key=key,
                                    game=game,
                                    inside=True)
-        
+    
+        self.rooms = {}
     
     def getDescription(self):
         return self.description
@@ -29,20 +36,45 @@ class Room(resource.Resource):
     
     def isRoom(self):
         return True
+    
+    def addRoom(self,
+                otherRoom,
+                direction):
+        self.rooms[direction] = otherRoom
+    
+    def getRoom(self,
+                direction):
+        return self.rooms.get(direction)
+        
 
 
 def createRooms(game):
-    storeByKey([Room(key='archmage_ritual_room')])
+    storeByKey([Room(key='archmage_ritual_room'),
+                Room(key='apprentice_ritual_room')])
     for (key, room) in roomsByKey.items():
         room.setGame(game)
         description = getattr(room_descriptions, key)
         room.setDescription(description)
-        
+    linkRooms()
+
 def getRoom(key):
     return roomsByKey[key]
+    
+def linkRooms():
+    addTwoWayLink('archmage_ritual_room',
+                  'south',
+                  'apprentice_ritual_room')
 
-
-  
+def addTwoWayLink(roomKey,
+                  direction,
+                  otherRoomKey):
+    room = getRoom(roomKey)
+    otherRoom = getRoom(otherRoomKey)
+    room.addRoom(otherRoom,
+                 direction)
+    oppositeDirection = oppositeDirectionReference[direction]
+    otherRoom.addRoom(room,
+                      oppositeDirection)
 
 def storeByKey(rooms):
     for room in rooms:

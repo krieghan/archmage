@@ -43,13 +43,7 @@ class Game(object):
                 succeeded = parsedCommand.act()
                 if not succeeded:
                     raise exception.CouldNotInterpret('I understood "%s", but did not know what to do with it.' % commandText)
-            except exception.MissingObject, e:
-                self.display(str(e))
-                continue
             except exception.DenyInput, e:
-                self.display(str(e))
-                continue
-            except exception.CannotPerformAction, e:
                 self.display(str(e))
                 continue
             except exception.PlayerDeath:

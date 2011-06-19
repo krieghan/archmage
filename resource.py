@@ -74,6 +74,11 @@ class Resource(object):
     def setDescription(self,
                        description):
         self.description = description
+        
+    def setName(self,
+                name):
+        self.name = name
+        self.__class__.name = name
     
     def getDescription(self):
         return self.description if self.description else self.__class__.description

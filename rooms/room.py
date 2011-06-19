@@ -3,7 +3,7 @@ import re
 from text_adventure import text
 
 from archmage import resource
-from archmage.rooms import room_descriptions
+from archmage.rooms import room_data
 
 roomsByKey = {}
 oppositeDirectionReference = {'north' : 'south',
@@ -53,8 +53,9 @@ def createRooms(game):
                 Room(key='apprentice_ritual_room')])
     for (key, room) in roomsByKey.items():
         room.setGame(game)
-        description = getattr(room_descriptions, key)
-        room.setDescription(description)
+        roomData = getattr(room_data, key)
+        room.setDescription(roomData['description'])
+        room.setName(roomData['name'])
     linkRooms()
 
 def getRoom(key):

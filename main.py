@@ -30,7 +30,6 @@ class Game(object):
                                          thesaurus=dictionary.thesaurus,
                                          singleToPlural=dictionary.singleToPlural,
                                          pluralToSingle=dictionary.pluralToSingle)
-        self.player.changeOwner(room.getRoom('archmage_ritual_room'))
         self.addResourcesToParser(parser)
         
         while(True):

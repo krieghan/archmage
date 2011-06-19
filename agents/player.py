@@ -17,6 +17,13 @@ class Player(agent.Agent):
                  'will' : 0}
         self.stats.update(stats)
     
+    def changeOwner(self,
+                    newOwner,
+                    slotKey='inside'):
+        agent.Agent.changeOwner(self,
+                                newOwner,
+                                slotKey)
+        self.announceRoom()
     
     def findResource(self,
                      resourceName,
@@ -55,6 +62,9 @@ class Player(agent.Agent):
         else:
             return eligibleAgents[0]
         
+    def announceRoom(self):
+        self.game.display(self.currentOwner.getName())
+        self.game.display(self.currentOwner.getDescription())
     
     def displayInventory(self):
         inventory.displayPlayerInventory(self.inventory)
